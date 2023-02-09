@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue
-        //useMaterial3: false, //material3 불안정함 미사용
+        primaryColor: Colors.blue
+
       ),
       home : LoginSignupScreen()
     );

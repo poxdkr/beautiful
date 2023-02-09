@@ -196,10 +196,10 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                     return null;
                                   },
                                   onSaved: (value){
-                                    userName = value!;
+                                    userMail = value!;
                                   },
                                   onChanged: (value){
-                                    userName = value;
+                                    userMail = value;
                                   },
                                   decoration: InputDecoration(
                                       prefixIcon: Icon(Icons.account_circle,
@@ -221,7 +221,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                             Radius.circular(35),
                                           )
                                     ),
-                                  hintText: 'Username',
+                                  hintText: 'email',
                                   hintStyle: TextStyle(
                                       color : Palette.textColor1,
                                       fontSize: 14,
@@ -232,6 +232,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                 SizedBox(height:8),
                                 TextFormField(
                                   key : ValueKey(2),
+                                  obscureText: true,
                                   validator: (value){
                                     if(value!.isEmpty || value!.length < 6 ){
                                       return "Password must be at least 7 characters";
@@ -469,7 +470,28 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                             )
                           );
                         }
+                      }else if(!isSignupScreen){
+                        _tryValidation();
+
+                        final newUser = await _authentication.signInWithEmailAndPassword(
+                            email: userMail,
+                            password: userPassword
+                        );
+                        try {
+                          if (newUser.user != null) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) {
+                                  return ChatScreen();
+                                }
+                                )
+                            );
+                          }
+                        }catch(e){
+                          print(e);
+                        }
                       }
+
                     },
                     child: Container(
                       decoration: BoxDecoration(
