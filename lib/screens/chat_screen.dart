@@ -41,7 +41,9 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat_Screen'),
+        leading: Icon(Icons.accessibility_new),
+        title: Text('우리끼리 쓰는 채팅방!'),
+        backgroundColor: Colors.redAccent,
         actions: [
           IconButton(
               icon : Icon(Icons.exit_to_app),
@@ -55,15 +57,20 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
 
       //body를 그려주기 전에 StreamBuilder를 통해 정보를 받아옴
-      body : Container(
-        child : Column(
-          children: [
-            Expanded(
-                child: Messages()
-            ),
-            NewMessage()
-          ],
-        )
+      body : GestureDetector(
+        onTap: (){
+          FocusScope.of(context).unfocus();
+        },
+        child: Container(
+          child : Column(
+            children: [
+              Expanded(
+                  child: Messages()
+              ),
+              NewMessage()
+            ],
+          )
+        ),
       )
     );
   }

@@ -18,7 +18,7 @@ class _MessagesState extends State<Messages> {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: FirebaseFirestore.instance.collection('chat')
-                                      .orderBy('time',descending: true)
+                                      .orderBy('time_stamp',descending: true)
                                       .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
         if(snapshot.connectionState == ConnectionState.waiting){

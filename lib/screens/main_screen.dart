@@ -516,12 +516,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                               showSpinner = false;
                             });
                           }catch(e){
-                            AlertDialog(
-
-                              actions: [
-                                Text('로그인 정보를 확인하시기 바랍니다.')
-                              ]
-                            );
+                            Alert('로그인 정보를 확인하시기 바랍니다.');
                             showSpinner=false;
 
                           }
@@ -585,4 +580,44 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       ),
     );
   }
+
+  //Dialog
+  void Alert(String message){
+    showDialog(
+        context: context,
+        //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            // RoundedRectangleBorder - Dialog 화면 모서리 둥글게 조절
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            //Dialog Main Title
+            title: Column(
+              children: <Widget>[
+                Icon(Icons.lock_outlined,color: Colors.orangeAccent),
+                Text("아,문제가 있네 이거"),
+              ],
+            ),
+            //
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text('뭘 가만히 보고 있는거야,', style : TextStyle(color: Colors.orange, fontSize: 13, fontWeight: FontWeight.bold)),
+                Text("로그인 정보에 문제가 있는거 같다고!", style : TextStyle(color: Colors.orangeAccent, fontSize: 13, fontWeight: FontWeight.bold)),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text("확인"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
 }

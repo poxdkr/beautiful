@@ -19,8 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: Colors.blue
-
+        primaryColor: Colors.redAccent
       ),
       home : StreamBuilder(
         //로그아웃이나 뒤로가기를 시도하여 이 페이지를 올 경우
