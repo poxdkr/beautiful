@@ -45,7 +45,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: Scaffold(
-        backgroundColor: Palette.backgroundColor,
+        backgroundColor: Colors.white,
         body: GestureDetector(
           onTap: (){
             FocusScope.of(context).unfocus();
@@ -60,7 +60,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   child: Container(
                     decoration : BoxDecoration(
                         image : DecorationImage(
-                            image: AssetImage('image/red.jpg'),
+                            image: AssetImage('image/sunset.jpg'),
                             fit : BoxFit.fill
                         )
                     ),
@@ -76,15 +76,25 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                 letterSpacing: 1.0,
                                 fontSize: 25,
                                 color : Colors.white,
+                                shadows: [Shadow(
+                                  offset: Offset(1,1),
+                                  blurRadius: 2,
+                                  color: Colors.orangeAccent,
+                                )]
                               ),
                               children: [
                                 TextSpan(
-                                  text : isSignupScreen ? ' to Yummy Chat!' : ' Back!',
+                                  text : isSignupScreen ? ' to Our Chat!' : ' Back!',
                                   style : TextStyle(
                                     letterSpacing: 1.0,
                                     fontSize: 25,
                                     color : Colors.white,
                                     fontWeight: FontWeight.bold,
+                                    shadows: [Shadow(
+                                      offset: Offset(1,1),
+                                      blurRadius: 2,
+                                      color: Colors.orangeAccent,
+                                    )]
                                   )
                                 )
                               ]
@@ -97,6 +107,11 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                             letterSpacing: 1.0,
                             fontSize: 12,
                             color : Colors.white,
+                            shadows: [Shadow(
+                              offset: Offset(1,1),
+                              blurRadius: 2,
+                              color: Colors.orangeAccent,
+                            )]
                           )
                         )
                       ],
@@ -197,7 +212,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                     key : ValueKey(1),
                                     validator: (value){
                                       if(value!.isEmpty || value!.length <5){
-                                        return 'Please enter a username at least 6 characters';
+                                        return 'Email 주소는 5글자 이상 적어야 해!';
                                       }
                                       return null;
                                     },
@@ -227,7 +242,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                               Radius.circular(35),
                                             )
                                       ),
-                                    hintText: 'email',
+                                    hintText: 'E-Mail 주소',
                                     hintStyle: TextStyle(
                                         color : Palette.textColor1,
                                         fontSize: 14,
@@ -240,8 +255,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                     key : ValueKey(2),
                                     obscureText: true,
                                     validator: (value){
-                                      if(value!.isEmpty || value!.length < 6 ){
-                                        return "Password must be at least 7 characters";
+                                      if(value!.isEmpty || value!.length < 5 ){
+                                        return "비밀번호는 6글자 이상이야!";
                                       }
                                       return null;
                                     },
@@ -271,7 +286,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                             Radius.circular(35),
                                           )
                                       ),
-                                      hintText: 'Password',
+                                      hintText: '비밀번호',
                                       hintStyle: TextStyle(
                                         color : Palette.textColor1,
                                         fontSize: 14,
@@ -295,8 +310,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                   TextFormField(
                                     key : ValueKey(3),
                                     validator: (value){
-                                     if(value!.isEmpty || value!.length <4){
-                                        return 'Please enter at least 4 characters';
+                                     if(value!.isEmpty || value!.length <3){
+                                        return '닉네임은 3글자 이상 적어야 해!';
                                      }
                                      return null;
                                     },
@@ -326,7 +341,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                             Radius.circular(35),
                                           )
                                       ),
-                                      hintText: 'Username',
+                                      hintText: '닉네임',
                                       hintStyle: TextStyle(
                                         color : Palette.textColor1,
                                         fontSize: 14,
@@ -341,7 +356,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                     key : ValueKey(4),
                                     validator: (value){
                                       if(value!.isEmpty || !value!.contains('@')){
-                                        return "Please enter a valid email address";
+                                        return "올바른 E-Mail 주소로 적어!";
                                       }
                                       return null;
                                     },
@@ -371,7 +386,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                             Radius.circular(35),
                                           )
                                       ),
-                                      hintText: 'email',
+                                      hintText: 'E-Mail',
                                       hintStyle: TextStyle(
                                         color : Palette.textColor1,
                                         fontSize: 14,
@@ -385,8 +400,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                     obscureText: true,
                                     key : ValueKey(5),
                                     validator: (value){
-                                      if(value!.isEmpty || value!.length < 6){
-                                        return 'Password must be at least 7 characters';
+                                      if(value!.isEmpty || value!.length < 5){
+
+                                        return '비밀번호는 5글자 이상이라고!';
                                       }
                                       return null;
                                     },
@@ -484,11 +500,17 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                             });
                           }catch(e){
                             print(e);
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                  content: Text('Please check your email and password')
+                                  content: Text('이미 등록된 메일주소야!')
                               )
                             );
+                            setState(() {
+                              showSpinner = false;
+                            });
+                            FocusScope.of(context).unfocus();
+                            return;
                           }
                         }else if(!isSignupScreen){
                           _tryValidation();
@@ -518,7 +540,6 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                           }catch(e){
                             Alert('로그인 정보를 확인하시기 바랍니다.');
                             showSpinner=false;
-
                           }
                         }
 
@@ -548,7 +569,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   ),
                 ),
               //Google Login Btn
-              AnimatedPositioned(
+              /*AnimatedPositioned(
                 duration : Duration(milliseconds: 300),
                 curve : Curves.easeIn,
                 top:isSignupScreen ? MediaQuery.of(context).size.height-80 : MediaQuery.of(context).size.height-165,
@@ -573,7 +594,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                     )
                   ]
                 )
-              )
+              )*/
             ],
           ),
         ),
@@ -613,6 +634,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                 child: Text("확인"),
                 onPressed: () {
                   Navigator.pop(context);
+                  setState(() {
+                    showSpinner = false;
+                  });
                 },
               ),
             ],
