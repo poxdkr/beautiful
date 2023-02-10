@@ -18,7 +18,7 @@ class _MessagesState extends State<Messages> {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: FirebaseFirestore.instance.collection('chat')
-                                      .orderBy('time')
+                                      .orderBy('time',descending: true)
                                       .snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
         if(snapshot.connectionState == ConnectionState.waiting){
@@ -31,11 +31,15 @@ class _MessagesState extends State<Messages> {
           reverse:  true,
           itemCount: chatDocs.length,
           itemBuilder: (context,index){
-            return ChatBubble(
-                chatDocs[index]['text'],
-                chatDocs[index]['userID'] == user!.uid
-            );
-          },
+
+              return ChatBubbles(
+                  chatDocs[index]['time'],
+                  chatDocs[index]['userName'],
+                  chatDocs[index]['text'],
+                  chatDocs[index]['userID'] == user!.uid
+              );
+            }
+
           );
       },
     );

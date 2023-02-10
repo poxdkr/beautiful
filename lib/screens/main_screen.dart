@@ -495,11 +495,12 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                           setState(() {
                             showSpinner = true;
                           });
-                          final newUser = await _authentication.signInWithEmailAndPassword(
-                              email: userMail,
-                              password: userPassword
-                          );
                           try {
+                            //로그인을 시도할 것이나, 결과가 없으면 catch문으로 보낸다.
+                            final newUser = await _authentication.signInWithEmailAndPassword(
+                                email: userMail,
+                                password: userPassword
+                            );
                             if (newUser.user != null) {
                               /*Navigator.push(
                                   context,
@@ -508,12 +509,21 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                   }
                                   )
                               );*/
+                            }else{
+                              return;
                             }
                             setState(() {
                               showSpinner = false;
                             });
                           }catch(e){
-                            print(e);
+                            AlertDialog(
+
+                              actions: [
+                                Text('로그인 정보를 확인하시기 바랍니다.')
+                              ]
+                            );
+                            showSpinner=false;
+
                           }
                         }
 
