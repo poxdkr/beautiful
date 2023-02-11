@@ -2,13 +2,45 @@ import 'package:beautiful/config/Palette.dart';
 import 'package:beautiful/screens/chat_screen.dart';
 import 'package:beautiful/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:firebase_admin/firebase_admin.dart';
+
+//백그라운드 활성화
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+}
 
 void main() async {
+  //FlutterBinding 초기화
   WidgetsFlutterBinding.ensureInitialized();
+  //FireBase초기화
   await Firebase.initializeApp();
+  //해당 기기의 토근 발급 및 확인
+  var fcmToken = await FirebaseMessaging.instance.getToken(vapidKey: "BOUPZvpCO-wJSCMrBw4upvnPQfeY4VXbmXzSFpQdQ9wKJZGIx0c2iVCw4TdGWeVgCANTjGfhYs4KMMHO_UrXypg");
+  //FirebaseMessaging Background 메시지 처리
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  //기존 토큰 삭제시 재발급
+  FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) async {});
+  //안드로이드 채널 설정
+  var channel = const AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // name
+    description: 'This channel is used for important notifications.', // description
+    importance: Importance.high,
+    enableVibration: true,
+    playSound: true,
+  );
+  //flutterLocalNotificationsPlugin 과 channel 설정 결합
+  var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  //앱시작
   runApp(const MyApp());
 }
 
@@ -23,6 +55,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.redAccent
       ),
+      //애니메이티드 스플래시
       home : AnimatedSplashScreen(
         curve: Curves.bounceIn,
         backgroundColor: Palette.googleColor,
